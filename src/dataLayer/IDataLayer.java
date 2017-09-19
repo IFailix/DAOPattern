@@ -2,8 +2,8 @@ package dataLayer;
 
 import dataLayer.dataAccessObjects.ITrainerDao;
 
-public interface IDataLayer{
+public interface IDataLayer {
 
-public ITrainerDao getITrainerDao();
+    public ITrainerDao getITrainerDao();
 
 }

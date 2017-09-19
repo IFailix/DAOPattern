@@ -1,5 +1,7 @@
 package dataLayer.dataAccessObjects;
 
+import businessObjects.ITrainer;
+
 import java.util.ArrayList;
 
 public interface ITrainerDao {
