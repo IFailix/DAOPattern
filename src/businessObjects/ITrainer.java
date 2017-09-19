@@ -10,7 +10,7 @@ public interface ITrainer {
 
     public int getAlter();
 
-    public void setName(int alter);
+    public void setAlter(int alter);
 
     public int getErfahrung();
 

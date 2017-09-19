@@ -1,6 +1,7 @@
 package dataLayer.dataAccessObjects;
 
 import businessObjects.ITrainer;
+import dataLayer.businessObjects.Trainer;
 
 import java.util.ArrayList;
 
