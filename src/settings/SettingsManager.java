@@ -12,7 +12,7 @@ import org.xml.sax.SAXException;
 
 public class SettingsManager {
 	private static SettingsManager instance=null;
-	private static PersistanceSettings persistanceSettings=null;
+	private static PersistenceSettings persistenceSettings=null;
 	private String settingsFileName = "settings.xml";
 	
 	private SettingsManager() {}
@@ -24,28 +24,28 @@ public class SettingsManager {
 		return instance;
 	}
 	
-	public PersistanceSettings getPersistanceSettings() {
-		if(persistanceSettings == null) {
-			persistanceSettings = new PersistanceSettings();
-			readPersistanceSettings();
+	public PersistenceSettings getPersistenceSettings() {
+		if(persistenceSettings == null) {
+			persistenceSettings = new PersistenceSettings();
+			readPersistenceSettings();
 		}
-		return persistanceSettings;
+		return persistenceSettings;
 	}
 	
-	private PersistanceSettings readPersistanceSettings() {
+	private PersistenceSettings readPersistenceSettings() {
 		try {
 			File settingsFile = new File(settingsFileName);
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(settingsFile);
-			String persistanceType = document.getElementsByTagName("persistance").item(0).getTextContent();
+			String persistenceType = document.getElementsByTagName("persistence").item(0).getTextContent();
 		
-			if(!persistanceType.equals("sqlite") && !persistanceType.equals("xml")) {
-				System.out.println("Der Persistenz-Wert \"" + persistanceType + "\"  aus der Datei " + settingsFileName + " ist nicht gültig.");
+			if(!persistenceType.equals("sqlite") && !persistenceType.equals("xml")) {
+				System.out.println("Der Persistenz-Wert \"" + persistenceType + "\"  aus der Datei " + settingsFileName + " ist nicht gültig.");
 				System.exit(1);
 			}
 			
-			persistanceSettings.setPersistanceType(persistanceType);
+			persistenceSettings.setPersistenceType(persistenceType);
 		}
 		catch (IOException e) {
 			System.out.println("Settings konnten nicht geladen werden. Fehlt die " + settingsFileName + " Datei?");
@@ -60,6 +60,6 @@ public class SettingsManager {
 			System.exit(1);
 		}
 		
-		return persistanceSettings;
+		return persistenceSettings;
 	}
 }
