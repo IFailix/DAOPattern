@@ -38,7 +38,7 @@ public class SettingsManager {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(settingsFile);
-			String persistenceType = document.getElementsByTagName("persistence").item(0).getTextContent();
+			String persistenceType = document.getElementsByTagName("persistence").item(0).getTextContent().toLowerCase();
 		
 			if(!persistenceType.equals("sqlite") && !persistenceType.equals("xml")) {
 				System.out.println("Der Persistenz-Wert \"" + persistenceType + "\"  aus der Datei " + settingsFileName + " ist nicht gültig.");
