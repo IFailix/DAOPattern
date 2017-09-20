@@ -1,7 +1,2 @@
-.classpath
-.idea/
-.project
-DAOPattern.iml
-Test*.java
 bin/
 out/
