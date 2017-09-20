@@ -23,9 +23,9 @@ public class DataLayerManager {
 		if(dataLayer == null) {
 			SettingsManager settingsManager = SettingsManager.getInstance();
 			PersistenceSettings persistenceSettings = settingsManager.getPersistenceSettings();
-			String persistenceType = persistenceSettings.getPersistenceType();
+			String type = persistenceSettings.getPersistenceType();
 			
-			if(persistenceType.equals("sqlite")) {
+			if(type.equals("sqlite")) {
 				dataLayer = new DataLayerSqlite();
 			}
 			else {
