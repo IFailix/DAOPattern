@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.111"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentationLayer.MainViewController">
+    <children>
+        <TextField fx:id="trainerIdSucheField" layoutX="326.0" layoutY="18.0" AnchorPane.rightAnchor="125.0"
+                   AnchorPane.topAnchor="18.0" disable="${editMode.selected}"/>
+        <Label layoutX="284.0" layoutY="21.0" text="Suche" AnchorPane.rightAnchor="284.0" AnchorPane.topAnchor="21.0"/>
+        <Button fx:id="firstValueButton" layoutX="477.0" layoutY="18.0" mnemonicParsing="false" text="|&lt;"
+                AnchorPane.rightAnchor="95.0" AnchorPane.topAnchor="18.0" disable="${editMode.selected}"/>
+        <Button fx:id="prevValueButton" layoutX="506.0" layoutY="18.0" mnemonicParsing="false" text="&lt;"
+                AnchorPane.rightAnchor="69.0" AnchorPane.topAnchor="18.0" disable="${editMode.selected}"/>
+        <Button fx:id="nextValueButton" layoutX="532.0" layoutY="18.0" mnemonicParsing="false" text="&gt;"
+                AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="18.0" disable="${editMode.selected}"/>
+        <Button fx:id="lastValueButton" layoutX="558.0" layoutY="18.0" mnemonicParsing="false" text="&gt;|"
+                AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="18.0" disable="${editMode.selected}"/>
+        <Button layoutX="14.0" layoutY="18.0" mnemonicParsing="false" text="Neu" disable="${editMode.selected}"/>
+        <Button fx:id="loeschenButton" layoutX="128.0" layoutY="18.0" mnemonicParsing="false" text="Löschen"
+                disable="${editMode.selected}"/>
+        <ToggleButton fx:id="editMode" layoutX="63.0" layoutY="18.0" mnemonicParsing="false" text="Ändern"/>
+        <Pane fx:id="trainerView" layoutX="12.0" layoutY="54.0" prefHeight="335.0" prefWidth="577.0"
+              AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="11.0"
+              AnchorPane.topAnchor="54.0"/>
+    </children>
+</AnchorPane>
