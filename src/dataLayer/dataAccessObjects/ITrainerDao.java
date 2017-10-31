@@ -2,27 +2,32 @@ package dataLayer.dataAccessObjects;
 
 import businessObjects.ITrainer;
 import dataLayer.businessObjects.Trainer;
+import exceptions.NoNextTrainerFoundException;
+import exceptions.NoPreviousTrainerFoundException;
+import exceptions.NoTrainerFoundException;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ITrainerDao {
 
-    public ITrainer create();
+    public ITrainer create() throws IOException;
 
-    public void delete(Trainer ITrainer);
+    public void delete(ITrainer trainer);
 
-    public ITrainer first();
+    public ITrainer first() throws NoTrainerFoundException;
 
-    public ITrainer last();
+    public ITrainer last() throws NoTrainerFoundException;
 
-    public ITrainer next(Trainer ITrainer);
+    public ITrainer next(ITrainer trainer) throws NoNextTrainerFoundException;
 
-    public ITrainer previous(Trainer ITrainer);
+    public ITrainer previous(ITrainer trainer) throws NoNextTrainerFoundException, NoPreviousTrainerFoundException;
 
-    public void save(Trainer ITrainer);
+    public void save(ITrainer trainer) throws IOException;
 
-    public ArrayList select();
+    public List select();
 
-    public ITrainer select(int id);
+    public ITrainer select(int id) throws NoTrainerFoundException;
 
 }

@@ -9,6 +9,13 @@ public class Trainer implements ITrainer{
     private int alter;
     private int erfahrung;
 
+    public Trainer() {
+        this.id = id;
+        this.name = name;
+        this.alter = alter;
+        this.erfahrung = erfahrung;
+    }
+
     @Override
     public int getId() {
         return id;
@@ -33,6 +40,7 @@ public class Trainer implements ITrainer{
         return alter;
     }
 
+    @Override
     public void setAlter(int alter) {
         this.alter = alter;
     }
