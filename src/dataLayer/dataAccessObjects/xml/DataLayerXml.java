@@ -8,6 +8,6 @@ public class DataLayerXml implements IDataLayer{
 
     @Override
     public ITrainerDao getITrainerDao() {
-        return new ITrainerDao();
+        return new TrainerDaoXml();
     }
 }
