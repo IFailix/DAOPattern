@@ -52,7 +52,11 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-		db = DataLayerManager.getInstance().getDataLayer().getITrainerDao();
+		try {
+			db = DataLayerManager.getInstance().getDataLayer().getTrainerDao();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
         // TODO Auto-generated method stub
         System.out.println(trainerIdSucheField.getText());
