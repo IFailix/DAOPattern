@@ -14,7 +14,7 @@ public interface ITrainerDao {
 
     public ITrainer create() throws IOException;
 
-    public void delete(ITrainer trainer);
+    public void delete(ITrainer trainer) throws NoTrainerFoundException;
 
     public ITrainer first() throws NoTrainerFoundException;
 
@@ -26,7 +26,7 @@ public interface ITrainerDao {
 
     public void save(ITrainer trainer) throws IOException;
 
-    public List select();
+    public List select() throws NoTrainerFoundException;
 
     public ITrainer select(int id) throws NoTrainerFoundException;
 
