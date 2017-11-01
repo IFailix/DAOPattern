@@ -1,6 +1,8 @@
 package presentationLayer;
 
 import businessObjects.ITrainer;
+import dataLayer.dataAccessObjects.ITrainerDao;
+import exceptions.NoTrainerFoundException;
 import javafx.beans.property.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -41,6 +44,7 @@ public class ViewTrainerViewController implements Initializable {
     private Button speichernButton;
     @FXML
     private Button abbrechenButton;
+    private ITrainerDao db;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,6 +64,9 @@ public class ViewTrainerViewController implements Initializable {
             isEdit.unbind();
             isEdit.setValue(false);
             ITrainer trainer = backingObject;
+            if (isNew.get()){
+                removeTrainer(trainer);
+            }
             if (trainer != null) fillFrom(trainer);
         });
         speichernButton.setOnAction(action -> {
@@ -78,6 +85,16 @@ public class ViewTrainerViewController implements Initializable {
         alterField.textProperty().bindBidirectional(alter, numberStringConverter);
         erfahrungField.textProperty().bindBidirectional(erfahrung, numberStringConverter);
         nameField.textProperty().bindBidirectional(name);
+    }
+
+    private void removeTrainer(ITrainer trainer) {
+        if (trainer == null) return;
+
+        try {
+            db.delete(trainer);
+        } catch (NoTrainerFoundException e) {
+            System.out.printf("Could not remove trainer %s", trainer.getId());
+        }
     }
 
     private static StringConverter<Number> getNumberConverter() {
@@ -102,12 +119,18 @@ public class ViewTrainerViewController implements Initializable {
 
     private boolean persist(ITrainer trainer) {
         //TODO: Persist changes
+        try {
+            db.save(trainer);
+        } catch (IOException e) {
+            return false;
+        }
         return true;
     }
 
-    public void init(ITrainer trainer) throws IllegalArgumentException {
+    public void init(ITrainer trainer, ITrainerDao db) throws IllegalArgumentException {
         if (trainer == null) throw new IllegalArgumentException("Parameter 'trainer' can not be null!");
         fillFrom(trainer);
+        this.db = db;
         backingObject = trainer;
     }
 
