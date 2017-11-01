@@ -27,16 +27,14 @@ public class TrainerDaoSqlite implements ITrainerDao {
 
 	private static String CREATETABLEQUERY = "CREATE TABLE IF NOT EXISTS trainer (id integer primary key, name text DEFAULT '', age integer DEFAULT 0, experience integer DEFAULT 0);";
 
-	public TrainerDaoSqlite() {
+	public TrainerDaoSqlite() throws IOException{
 		try {
 			Class.forName(CLASSNAME);
 			con = DriverManager.getConnection(CONNECTIONSTRING);
 			st = con.createStatement();
 			st.execute(CREATETABLEQUERY);
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (SQLException | ClassNotFoundException e) {
+			throw new IOException(e.getMessage());
 		}
 	}
 
@@ -44,12 +42,8 @@ public class TrainerDaoSqlite implements ITrainerDao {
 	public ITrainer create() throws IOException {
 		try {
 			st.execute("INSERT INTO trainer (name) values('');");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
 			return last();
-		} catch (NoTrainerFoundException e) {
+		} catch (NoTrainerFoundException | SQLException e) {
 			throw new IOException(e.getMessage());
 		}
 	}
