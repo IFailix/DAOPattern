@@ -21,7 +21,7 @@
                 AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="18.0" disable="${editMode.selected}"/>
         <Button fx:id="lastValueButton" layoutX="558.0" layoutY="18.0" mnemonicParsing="false" text="&gt;|"
                 AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="18.0" disable="${editMode.selected}"/>
-        <Button fx:id="neuButton"  layoutX="14.0" layoutY="18.0" mnemonicParsing="false" text="Neu" disable="${editMode.selected}"/>
+        <Button fx:id="neuButton"  layoutX="14.0" layoutY="18.0" mnemonicParsing="false" text="Neu"/>
         <Button fx:id="loeschenButton" layoutX="128.0" layoutY="18.0" mnemonicParsing="false" text="Löschen"
                 disable="${editMode.selected}"/>
         <ToggleButton fx:id="editMode" layoutX="63.0" layoutY="18.0" mnemonicParsing="false" text="Ändern"/>

@@ -1,21 +1,26 @@
 package presentationLayer;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.EventListener;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
 import businessObjects.ITrainer;
 import dataLayer.dataAccessObjects.ITrainerDao;
 import exceptions.NoTrainerFoundException;
-import javafx.beans.property.*;
-import javafx.event.EventHandler;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.util.StringConverter;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 public class ViewTrainerViewController implements Initializable {
 
@@ -46,6 +51,7 @@ public class ViewTrainerViewController implements Initializable {
     private Button abbrechenButton;
     private ITrainerDao db;
 
+    private Runnable disposeFunction;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setBindings();
@@ -57,6 +63,8 @@ public class ViewTrainerViewController implements Initializable {
             handler.consume();
     }
 
+    public EventListener onSaved;
+    
     private void setBindings() {
         speichernButton.visibleProperty().bind(isNew.or(isEdit));
         abbrechenButton.visibleProperty().bind(speichernButton.visibleProperty());
@@ -67,8 +75,9 @@ public class ViewTrainerViewController implements Initializable {
             if (isNew.get()){
                 removeTrainer(trainer);
             }
-            if (trainer != null) fillFrom(trainer);
+            disposeFunction.run();
         });
+        
         speichernButton.setOnAction(action -> {
             ITrainer trainer = backingObject;
             fillTo(trainer);
@@ -77,6 +86,7 @@ public class ViewTrainerViewController implements Initializable {
             isEdit.unbind();
             isEdit.setValue(false);
         });
+        
         idField.setOnKeyTyped(ViewTrainerViewController::onlyPassNumbers);
         alterField.setOnKeyTyped(ViewTrainerViewController::onlyPassNumbers);
         erfahrungField.setOnKeyTyped(ViewTrainerViewController::onlyPassNumbers);
@@ -95,6 +105,7 @@ public class ViewTrainerViewController implements Initializable {
         } catch (NoTrainerFoundException e) {
             System.out.printf("Could not remove trainer %s", trainer.getId());
         }
+        
     }
 
     private static StringConverter<Number> getNumberConverter() {
@@ -127,11 +138,12 @@ public class ViewTrainerViewController implements Initializable {
         return true;
     }
 
-    public void init(ITrainer trainer, ITrainerDao db) throws IllegalArgumentException {
+    public void init(ITrainer trainer, ITrainerDao db, Runnable disposeFunction) throws IllegalArgumentException {
         if (trainer == null) throw new IllegalArgumentException("Parameter 'trainer' can not be null!");
         fillFrom(trainer);
         this.db = db;
         backingObject = trainer;
+        this.disposeFunction = disposeFunction;
     }
 
     private void fillFrom(ITrainer trainer) {
