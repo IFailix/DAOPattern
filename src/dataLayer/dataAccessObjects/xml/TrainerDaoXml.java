@@ -75,68 +75,56 @@ public class TrainerDaoXml implements ITrainerDao {
 
     @Override
     public void save(ITrainer trainer) throws IOException {
-        File file = new File("trainerDatabase.xml");
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-
-
         try {
             DocumentBuilderFactory dbFactory =
                     DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.newDocument();
 
-            // root element
             Element rootElement = doc.createElement("trainers");
             doc.appendChild(rootElement);
 
-            // supercars element
-            Element supercar = doc.createElement("trainer");
-            rootElement.appendChild(supercar);
+            Element trainerElement = doc.createElement("trainer");
+            rootElement.appendChild(trainerElement);
 
-            // setting attribute to element
             Attr attr = doc.createAttribute("trainer");
             attr.setValue("trainer");
-            supercar.setAttributeNode(attr);
+            trainerElement.setAttributeNode(attr);
 
-            // trainerId element
             Element trainerId = doc.createElement("id");
             Attr attrType = doc.createAttribute("type");
             attrType.setValue("id");
             trainerId.setAttributeNode(attrType);
             trainerId.appendChild(doc.createTextNode(String.valueOf(trainer.getId())));
-            supercar.appendChild(trainerId);
+            trainerElement.appendChild(trainerId);
 
             Element trainerName = doc.createElement("name");
             Attr attrType1 = doc.createAttribute("type");
             attrType1.setValue("name");
             trainerName.setAttributeNode(attrType1);
             trainerName.appendChild(doc.createTextNode(trainer.getName()));
-            supercar.appendChild(trainerName);
+            trainerElement.appendChild(trainerName);
 
             Element trainerAge = doc.createElement("alter");
             Attr attrType2 = doc.createAttribute("type");
             attrType2.setValue("alter");
             trainerAge.setAttributeNode(attrType2);
             trainerAge.appendChild(doc.createTextNode(String.valueOf(trainer.getAlter())));
-            supercar.appendChild(trainerAge);
+            trainerElement.appendChild(trainerAge);
 
             Element trainerExp = doc.createElement("erfahrung");
             Attr attrType3 = doc.createAttribute("type");
             attrType3.setValue("erfahrung");
             trainerExp.setAttributeNode(attrType3);
             trainerExp.appendChild(doc.createTextNode(trainer.getName()));
-            supercar.appendChild(trainerExp);
+            trainerElement.appendChild(trainerExp);
 
-            // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File("trainer.xml"));
             transformer.transform(source, result);
 
-            // Output to console for testing
             StreamResult consoleResult = new StreamResult(System.out);
             transformer.transform(source, consoleResult);
         } catch (Exception e) {
