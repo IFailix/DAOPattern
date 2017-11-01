@@ -1,6 +1,7 @@
 package presentationLayer;
 
 import businessObjects.ITrainer;
+import dataLayer.dataAccessObjects.ITrainerDao;
 import javafx.beans.property.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -41,6 +42,7 @@ public class ViewTrainerViewController implements Initializable {
     private Button speichernButton;
     @FXML
     private Button abbrechenButton;
+    private ITrainerDao db;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,6 +62,9 @@ public class ViewTrainerViewController implements Initializable {
             isEdit.unbind();
             isEdit.setValue(false);
             ITrainer trainer = backingObject;
+            if (isNew.get()){
+                removeTrainer(trainer);
+            }
             if (trainer != null) fillFrom(trainer);
         });
         speichernButton.setOnAction(action -> {
@@ -78,6 +83,10 @@ public class ViewTrainerViewController implements Initializable {
         alterField.textProperty().bindBidirectional(alter, numberStringConverter);
         erfahrungField.textProperty().bindBidirectional(erfahrung, numberStringConverter);
         nameField.textProperty().bindBidirectional(name);
+    }
+
+    private void removeTrainer(ITrainer trainer) {
+        db.delete(trainer);
     }
 
     private static StringConverter<Number> getNumberConverter() {
@@ -105,9 +114,10 @@ public class ViewTrainerViewController implements Initializable {
         return true;
     }
 
-    public void init(ITrainer trainer) throws IllegalArgumentException {
+    public void init(ITrainer trainer, ITrainerDao db) throws IllegalArgumentException {
         if (trainer == null) throw new IllegalArgumentException("Parameter 'trainer' can not be null!");
         fillFrom(trainer);
+        this.db = db;
         backingObject = trainer;
     }
 
