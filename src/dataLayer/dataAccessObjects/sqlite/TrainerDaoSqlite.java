@@ -146,7 +146,7 @@ public class TrainerDaoSqlite implements ITrainerDao {
 	public List<ITrainer> select() throws NoTrainerFoundException {
 		List<ITrainer> liste = new ArrayList<ITrainer>();
 		try {
-			rs = st.executeQuery("SELECT * FROM trainer ORDER BY id");
+			rs = st.executeQuery("SELECT * FROM trainer ORDER BY id;");
 			while(rs.next()){
 				Trainer trainer = new Trainer();
 				trainer.setId(rs.getInt("id"));
