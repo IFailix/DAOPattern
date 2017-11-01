@@ -6,9 +6,7 @@ import java.util.ResourceBundle;
 
 import businessObjects.ITrainer;
 import dataLayer.DataLayerManager;
-import dataLayer.businessObjects.Trainer;
 import dataLayer.dataAccessObjects.ITrainerDao;
-import dataLayer.dataAccessObjects.xml.TrainerDaoXml;
 import exceptions.NoNextTrainerFoundException;
 import exceptions.NoPreviousTrainerFoundException;
 import exceptions.NoTrainerFoundException;
@@ -65,6 +63,7 @@ public class MainViewController implements Initializable {
 
     private void BindEvents() {
         editMode.disableProperty().bind(currentEntryProperty().isNull().or(editMode.selectedProperty()));
+        neuButton.disableProperty().bind(editMode.selectedProperty());
         loeschenButton.disableProperty().bind(currentEntryProperty().isNull().or(editMode.selectedProperty()));
 		nextValueButton.disableProperty().bind(currentEntryProperty().isNull());
 		prevValueButton.disableProperty().bind(currentEntryProperty().isNull());
@@ -107,7 +106,10 @@ public class MainViewController implements Initializable {
 				e.printStackTrace();
 			}
 		});
-		neuButton.setOnAction(action -> createNewTrainer());
+		neuButton.setOnAction(action -> {
+			createNewTrainer();
+		});
+		loeschenButton.setOnAction(action -> deleteTrainer(currentTrainer));
         trainerIdSucheField.setOnKeyPressed(action -> {
             if (action.getCode() == KeyCode.ENTER) {
                 TextField sender = (TextField) action.getSource();
@@ -125,6 +127,16 @@ public class MainViewController implements Initializable {
             }
         });
     }
+
+	private void deleteTrainer(ITrainer trainer) {
+		try {
+			db.delete(trainer);
+		} catch (NoTrainerFoundException e) {
+			System.out.printf("Could not delete trainer %s", trainer.getId());
+		}
+		trainerView.getChildren().clear();
+		firstValueButton.fire(); // Ersten trainer suchen.
+	}
 
 	private void createNewTrainer() {
 		try {
@@ -157,7 +169,11 @@ public class MainViewController implements Initializable {
 		Node node = loader.load();
 
 		ViewTrainerViewController controller = loader.getController();
-		controller.init(trainer, db);
+		controller.init(trainer, db, () -> 
+		{
+			trainerView.getChildren().clear();
+			currentEntry.set(null);
+		});
 		if(isNew){
 			controller.isNewProperty().setValue(true);
 		}
