@@ -4,6 +4,6 @@ import dataLayer.dataAccessObjects.ITrainerDao;
 
 public interface IDataLayer {
 
-    public ITrainerDao getITrainerDao();
+    public ITrainerDao getTrainerDao();
 
 }

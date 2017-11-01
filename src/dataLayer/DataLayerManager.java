@@ -3,8 +3,8 @@ package dataLayer;
 import settings.SettingsManager;
 import settings.PersistenceSettings;
 
-import dataLayer.businessObjects.sqlite.DataLayerSqlite;
-import dataLayer.businessObjects.xml.DataLayerXml;
+import dataLayer.dataAccessObjects.sqlite.DataLayerSqlite;
+import dataLayer.dataAccessObjects.xml.DataLayerXml;
 
 public class DataLayerManager {
 	private static DataLayerManager instance=null;

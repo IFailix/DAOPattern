@@ -30,7 +30,6 @@ public class Trainer implements ITrainer{
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
