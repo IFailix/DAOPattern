@@ -2,6 +2,7 @@ package presentationLayer;
 
 import businessObjects.ITrainer;
 import dataLayer.dataAccessObjects.ITrainerDao;
+import exceptions.NoTrainerFoundException;
 import javafx.beans.property.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -86,7 +88,13 @@ public class ViewTrainerViewController implements Initializable {
     }
 
     private void removeTrainer(ITrainer trainer) {
-        db.delete(trainer);
+        if (trainer == null) return;
+
+        try {
+            db.delete(trainer);
+        } catch (NoTrainerFoundException e) {
+            System.out.printf("Could not remove trainer %s", trainer.getId());
+        }
     }
 
     private static StringConverter<Number> getNumberConverter() {
@@ -111,6 +119,11 @@ public class ViewTrainerViewController implements Initializable {
 
     private boolean persist(ITrainer trainer) {
         //TODO: Persist changes
+        try {
+            db.save(trainer);
+        } catch (IOException e) {
+            return false;
+        }
         return true;
     }
 

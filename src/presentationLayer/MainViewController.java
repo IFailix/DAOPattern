@@ -52,13 +52,8 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	try {
-			db = DataLayerManager.getInstance().getDataLayer().getITrainerDao();
+		db = DataLayerManager.getInstance().getDataLayer().getITrainerDao();
 
-		} catch ( Exception e)
-		{
-
-		}
         // TODO Auto-generated method stub
         System.out.println(trainerIdSucheField.getText());
         BindEvents();
@@ -115,7 +110,9 @@ public class MainViewController implements Initializable {
                 if (sender != null) {
                     //TODO: Trainer Suchen
                     try {
-                        display(Integer.getInteger(sender.getText()),false);
+                    	String text = sender.getText();
+                    	int id = Integer.parseInt(text);
+                        display(id,false);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         //TODO: Error displaying trainer

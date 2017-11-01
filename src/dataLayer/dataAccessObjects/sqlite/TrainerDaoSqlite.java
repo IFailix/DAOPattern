@@ -32,11 +32,10 @@ public class TrainerDaoSqlite implements ITrainerDao {
 			Class.forName(CLASSNAME);
 			con = DriverManager.getConnection(CONNECTIONSTRING);
 			st = con.createStatement();
-			st.executeQuery(CREATETABLEQUERY);
-			con.commit();
+			st.execute(CREATETABLEQUERY);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-		} catch (ClassNotFoundException ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -44,8 +43,7 @@ public class TrainerDaoSqlite implements ITrainerDao {
 	@Override
 	public ITrainer create() throws IOException {
 		try {
-			rs = st.executeQuery("INSERT INTO trainer (name) values('');");
-			con.commit();
+			st.execute("INSERT INTO trainer (name) values('');");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -60,8 +58,7 @@ public class TrainerDaoSqlite implements ITrainerDao {
 	public void delete(ITrainer trainer) throws NoTrainerFoundException {
 		int id = trainer.getId();
 		try {
-			st.executeQuery("DELETE FROM trainer WHERE id = " + id + ";");
-			con.commit();
+			st.execute("DELETE FROM trainer WHERE id = " + id + ";");
 		} catch (SQLException e) {
 			throw new NoTrainerFoundException(e.getMessage());
 		}
@@ -72,7 +69,7 @@ public class TrainerDaoSqlite implements ITrainerDao {
 		Trainer trainer = new Trainer();
 		try {
 			rs = st.executeQuery("SELECT * FROM trainer ORDER BY id LIMIT 1;");
-			rs.first();
+			rs.next();
 			trainer.setId(rs.getInt("id"));
 			trainer.setName(rs.getString("name"));
 			trainer.setAlter(rs.getInt("age"));
@@ -88,7 +85,7 @@ public class TrainerDaoSqlite implements ITrainerDao {
 		Trainer trainer = new Trainer();
 		try {
 			rs = st.executeQuery("SELECT * FROM trainer ORDER BY id DESC LIMIT 1;");
-			rs.first();
+			rs.next();
 			trainer.setId(rs.getInt("id"));
 			trainer.setName(rs.getString("name"));
 			trainer.setAlter(rs.getInt("age"));
@@ -103,8 +100,8 @@ public class TrainerDaoSqlite implements ITrainerDao {
 	public ITrainer next(ITrainer trainer) throws NoNextTrainerFoundException {
 		Trainer returntrainer = new Trainer();
 		try {
-			rs = st.executeQuery("SELECT FROM trainer WHERE id > " + trainer.getId() + " ORDER BY id LIMIT 1;");
-			rs.first();
+			rs = st.executeQuery("SELECT * FROM trainer WHERE id > " + trainer.getId() + " ORDER BY id LIMIT 1;");
+			rs.next();
 			returntrainer.setId(rs.getInt("id"));
 			returntrainer.setName(rs.getString("name"));
 			returntrainer.setAlter(rs.getInt("age"));
@@ -119,8 +116,8 @@ public class TrainerDaoSqlite implements ITrainerDao {
 	public ITrainer previous(ITrainer trainer) throws NoPreviousTrainerFoundException {
 		Trainer returntrainer = new Trainer();
 		try {
-			rs = st.executeQuery("SELECT FROM trainer WHERE id < " + trainer.getId() + " ORDER BY id DESC LIMIT 1;");
-			rs.first();
+			rs = st.executeQuery("SELECT * FROM trainer WHERE id < " + trainer.getId() + " ORDER BY id DESC LIMIT 1;");
+			rs.next();
 			returntrainer.setId(rs.getInt("id"));
 			returntrainer.setName(rs.getString("name"));
 			returntrainer.setAlter(rs.getInt("age"));
@@ -134,9 +131,8 @@ public class TrainerDaoSqlite implements ITrainerDao {
 	@Override
 	public void save(ITrainer trainer) throws IOException {
 		try {
-			st.executeQuery("UPDATE trainer name = " + trainer.getName() + ", age = " + trainer.getAlter()
+			st.execute("UPDATE trainer SET name = '" + trainer.getName() + "', age = " + trainer.getAlter()
 					+ ", experience = " + trainer.getErfahrung() + " WHERE id = " + trainer.getId() + ";");
-			con.commit();
 		} catch (SQLException e) {
 			throw new IOException(e.getMessage());
 		}
@@ -165,8 +161,8 @@ public class TrainerDaoSqlite implements ITrainerDao {
 	public ITrainer select(int id) throws NoTrainerFoundException {
 		Trainer trainer = new Trainer();
 		try {
-			rs = st.executeQuery("SELECT FROM trainer WHERE id = " + id + ";");
-			rs.first();
+			rs = st.executeQuery("SELECT * FROM trainer WHERE id = " + id + ";");
+			rs.next();
 			trainer.setId(rs.getInt("id"));
 			trainer.setName(rs.getString("name"));
 			trainer.setAlter(rs.getInt("age"));
